@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Tiendas</title>
+</head>
+<body>
+    <h1>Ubicación de nuestras tiendas</h1>
+    pulse aquí <a href="{% url 'Nuevo' %}" > Crear</a> para crear una sede nueva
+    <ul>
+        {% for i in object_list %}
+        <li>
+            <p>Sede en {{i.ubicacion}}</p>
+            <a href="{% url 'Ver' i.sucursal %}" > Ver</a>
+            <a href="{% url 'Editar' i.sucursal %}" > Modificar</a>
+            <a href="{% url 'Borrar' i.sucursal %}" > Borrar</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

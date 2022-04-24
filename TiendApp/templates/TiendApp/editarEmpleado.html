@@ -1,0 +1,18 @@
+{% extends "TiendApp/base.html"%}
+
+{%block main_content%}
+<div class="container mt-5">
+    <form action="/tiendapp/editarEmpleado/{{empleados_dni}}/" method="POST"> {% csrf_token %}
+        <style>
+            body{
+            background-color: coral;
+                }
+        </style>
+            <p>Ingrese los datos MODIFICADOS del empleado: </p>
+            <table>
+                {{mi_form2.as_table}}
+            </table>
+                <input type="submit" value= "cargar datos" >
+        </form>
+</div>
+{%endblock%}

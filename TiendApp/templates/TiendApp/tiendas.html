@@ -1,0 +1,17 @@
+
+ 
+    <form action="" method="POST"> {% csrf_token %}
+        <style>
+            body{
+                background-color: aquamarine;
+            }
+        </style>
+        <p>Página para agregar números de sucursales (del 1 al 10) y su ubicación</p>
+     
+            <table>
+                {{mi_formulario1.as_table}}
+            </table>
+
+         <input type="submit" value= "cargar direcciones" >
+    </form>
+

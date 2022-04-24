@@ -1,0 +1,51 @@
+{% extends "TiendApp/base.html"%}
+
+{%block main_content%}
+<div class="container mt-5">
+    <form action="" method="POST"> {% csrf_token %}
+        <style>
+            body{
+            background-color: dodgerblue;
+                }
+        </style>
+            <p>Ingrese los datos del NUEVO empleado: </p>
+            <table>
+                {{mi_form2.as_table}}
+            </table>
+                <input type="submit" value= "cargar datos" >
+        </form>
+</div>
+
+            <div class="container mt-5">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="table-success">Nombre</th>
+                            <th class="table-success">Apellido</th>
+                            <th class="table-success">DNI</th>
+                            <th class="table-success">Cargo</th>
+                            <th class="table-success">Email</th>
+                            <th class="table-success">Telefono</th>
+                            <th class="table-success">Editar</th>
+                            <th class="table-success">Borrar</th>
+
+                        </tr>
+                    </thead>
+            
+                <tbody>
+                    {% for i in empleado %}
+                        <td>{{i.nombre}}</td> 
+                        <td>{{i.apellido}}</td> 
+                        <td>{{i.dni}}</td>   
+                        <td>{{i.puesto}}</td>   
+                        <td>{{i.email}}</td> 
+                        <td>{{i.telefono}}</td> 
+                        <td><a href= "{% url 'editarEmpleado' i.dni %}" > Editar</a></td>      
+                        <td><a href= "{% url 'eliminarEmpleado' i.dni %}" > Borrar</a></td>       
+                </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
+
+{%endblock%}

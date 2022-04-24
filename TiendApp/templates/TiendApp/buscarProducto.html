@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Producto</title>
+</head>
+<body>
+    <!--Esta dirección no tiene boton en la pagina web, pero tiene su views-->
+    <form action="/tiendapp/buscar/" method="GET" >
+
+     <p>INTRODUZCA EL NOMBRE DE UN ARTICULO DE LA TIENDA EN PLURAL o ALGUNA DE LAS LETRAS DEL NOMBRE</p>
+      <p> Producto <input name="productos" type="text" value=""></p>
+     <!--Al darle al input el nombre de productos, cualquier nombre va a ser productos-->
+      <!-- po eso debo diferenciar en el template resultado busqueda de los articulos, que si estan en la base de datos-->
+     <input type="submit" value="buscar">
+    </form>
+    
+</body>
+</html>

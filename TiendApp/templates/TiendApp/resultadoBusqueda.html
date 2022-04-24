@@ -1,0 +1,28 @@
+
+<html>
+<!--Debo fijarme en la views buscar quienes son los que dan lugar a los querys-->
+<body>
+    <p>Estamos buscando el producto : {{ productos }}</p>
+<!--productos son todas las palabras que yo meto, pero en realidad en la base de datos solo estan los articulos-->
+
+{% if articulos %} 
+    <ul>
+        {% for a in articulos %}
+         <il>
+             Nombre del producto : {{a.productos.title}}
+             <br>
+             Codigo : {{a.id}}
+             <br>
+             Precio: {{a.precio}}
+             <br>
+             <br>
+         </il>
+        {% endfor %}
+    </ul>
+
+    {% else %}
+         <p>Articulo NO STOCK</p>
+
+{% endif %}
+</body>
+</html>

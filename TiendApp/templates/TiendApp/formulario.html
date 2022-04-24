@@ -1,0 +1,15 @@
+
+
+   <!-- action no tiene direccion, porque ya lo hace la api-->
+    <form action="" method="POST"> {% csrf_token %}
+        <p>Página para cambiar precios de productos por id: jeans id=100, remeras id=200, buzos id=300, pantalones id=400, camperas id=500, zapatillas id=600</p>
+        <p>Si quiere agregar un producto nuevo, introduzca un nuevo id, preferiblemente de 3 cifras :)</p>
+        <!-- <p>id:<input name="ids" type="number" value= "" ></p>
+        <p>Producto:<input name="productos" type="text" value= "" ></p>
+        <p>Precio:<input name="precios" type="text" value= "" ></p> -->
+            <table>
+                {{mi_formulario.as_table}}
+            </table>
+
+         <input type="submit" value= "cargar datos" >
+    </form>

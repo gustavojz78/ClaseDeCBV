@@ -1,0 +1,14 @@
+<form action="" method="POST"> {% csrf_token %}
+    <style>
+        body{
+            background-color: darkorange;
+        }
+    </style>
+    <p>Página para cargar teléfonos y emails de las sucursales. La fórmula es lugar en el que está, seguido de @gustaffier.com</p>
+ <!--estos nombres de mi_form, los origine en las views, asociandolos a las forms-->
+        <table>
+            {{mi_form.as_table}}
+        </table>
+
+     <input type="submit" value= "cargar agenda" >
+</form>

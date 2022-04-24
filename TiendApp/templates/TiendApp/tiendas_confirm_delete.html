@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar sucursales</title>
+</head>
+<body>
+    <h1>Esta seguro de que desea eliminar esta sucursal?</h1>
+    <form method="POST">
+         {% csrf_token %}
+            <p>Realmente seguro que quiere eliminar la sede {{tiendas.sucursal}} ubicada en {{tiendas.ubicacion}}</p>
+
+         <input type="submit" value= "CONFIRMAR" >
+    </form>
+</body>
+</html>
