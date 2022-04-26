@@ -1,9 +1,14 @@
 from django.urls import path
 from TiendApp.views import *
-
+from django.contrib.auth.views import LogoutView
  
 urlpatterns = [
     path("", inicio, name="Inicio"),
+
+    path("login/",login_request, name="Login"),
+    path("registrar/",register_request, name="Registrar"),
+    path("logout/", LogoutView.as_view(template_name="TiendApp/logout.html"), name="Logout"),
+
     path("tiendas/", tiendas, name = "Tiendas"),
     path("contactos/", agenda, name = "Contacto"),
     path("staff/", staff, name ="Staff"),

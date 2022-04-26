@@ -10,6 +10,10 @@ from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
+#autenticación con django
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, logout, authenticate
+
 class TiendaLista(ListView):
     model = Tiendas
     template_name = "tiendapp/tienda_lista.html"
@@ -168,7 +172,49 @@ def actualizar (request, empleados_dni):
         mi_form2= AgregarEmpleado(initial={"nombre":empleado.nombre,"apellido":empleado.apellido, "puesto":empleado.puesto, "dni":empleado.dni, "email":empleado.email, "telefono":empleado.telefono} )
         return render(request, "tiendapp/editarEmpleado.html", {"mi_form2":mi_form2, "empleados_dni":empleados_dni})
        
+def login_request(request):
+    if request.method =="POST":
 
+        form=AuthenticationForm(request, data=request.POST)
+
+        if form.is_valid():
+            usuario=form.cleaned_data.get("username")
+            contra=form.cleaned_data.get("password")
+
+            usuario=authenticate(username=usuario, password=contra)
+        
+            if usuario is not None:
+                login(request,usuario)
+                return render(request, "tiendapp/index.html", {"page":usuario, "mensaje":[f"Bienvenid@ {usuario}"]})
+            else:
+                return render(request, "tiendapp/index.html",{"mensaje": ["Usuario no valido"]})
+        else:
+                return render(request, "tiendapp/index.html",{"mensaje": ["Error: Datos Incorrectos"]})
+    form=AuthenticationForm()
+
+    return render(request,"tiendapp/login.html", {"form":form})
+
+def register_request(request):
+    #Con esta view, podemos crear un registro practico,pero...
+    #yo quiero el formulario en español. Debo Irme a forms.py e importar el UserCretionForm
+    #luego ahí hago creo una clase para  querede de UserCreationForm
+    #y esa clase la sustituyo por la clase form aquí
+
+    if request.method == "POST":
+
+        #form = UserCreationForm(request.POST)
+        form = UsuarioRegistroForm(request.POST)
+        if form.is_valid():
+            usuario = form.cleaned_data.get("username")
+            print(usuario)
+            form.save()
+            return render(request, "tiendapp/index.html", {"mensaje": [f"El usuario -{usuario}- fue creado con EXITO"]})
+        else:
+            return render(request, "tiendapp/index.html",{"mensaje": [" Password NO VALIDO"]} )
+    else:
+        #form = UserCreationForm()
+        form= UsuarioRegistroForm()
+    return render(request, "tiendapp/registro.html", {"form": form})
 
   
 

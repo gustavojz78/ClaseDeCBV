@@ -45,8 +45,16 @@
                 <a class="btn btn-primary btn-xl text-uppercase" href="{% url 'Buscar'%}">Buscar</a>
             </div>
         </header>
-                {% block main_content%}
-                {% endblock %}
+
+        {% if mensaje %}
+            {% for i in mensaje %}
+               <h1>{{i}}</h1> 
+            {% endfor %}
+        {% endif %}
+
+{% block main_content%}
+
+{% endblock %}
                 <!-- Footer-->
         <footer class="footer py-4">
             <div class="container">
