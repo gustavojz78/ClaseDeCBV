@@ -5,7 +5,7 @@
     <form action="" method="POST"> {% csrf_token %}
         <style>
             body{
-            background-color: dodgerblue;
+            background-color: orange;
                 }
         </style>
             <p>Ingrese los datos del NUEVO empleado: </p>
@@ -40,8 +40,8 @@
                         <td>{{i.puesto}}</td>   
                         <td>{{i.email}}</td> 
                         <td>{{i.telefono}}</td> 
-                        <td><a href= "{% url 'editarEmpleado' i.dni %}" > Editar</a></td>      
-                        <td><a href= "{% url 'eliminarEmpleado' i.dni %}" > Borrar</a></td>       
+                        <td><a href= "{% url 'editarEmpleado' i.dni %}" > <font color="blue">Editar</font></a></td>      
+                        <td><a href= "{% url 'eliminarEmpleado' i.dni %}" ><font color="red">Borrar</font></a></td>       
                 </tr>
                     {% endfor %}
                 </tbody>

@@ -3,7 +3,7 @@
     <head>
         {% load static %}
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="viewport" content="width=60%, initial-scale=4, shrink-to-fit=yes" />
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>Agency - Start Bootstrap Theme</title>
@@ -12,7 +12,7 @@
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:300,500" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'TiendApp/css/styles.css' %}" rel="stylesheet" />
@@ -29,9 +29,17 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
                         <li class="nav-item"><a class="nav-link" href="{% url 'Inicio'%}">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'Actualizar'%}">Actualizar</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'Tiendas'%}">Tiendas</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'Staff'%}">Staff</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'Contacto'%}">Contacto</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'Logout'%}">Logout</a></li>
+                        {% if not request.user.is_authenticated %}
+                        <li class="btn-primary btn-primary text-uppercase"><a class="nav-link" href="{% url 'Login'%}"><font color="black">Login</font></a></li>
+                        {% else %}
+                            <p class="text-muted big mb-9"><font color="orange"><h3>Hola {{request.user.username}}</h3></font></p>
+                        {% endif %}
+                       
                     </ul>
                 </div>
             </div>
@@ -39,21 +47,22 @@
         <!-- Masthead-->
         <header class="masthead">
             <div class="container">
-                <div class="masthead-subheading">Bienvenido a Nuestra Tienda!</div>
-                <div class="masthead-heading text-uppercase">Gustaffier Designs</div>
-                <a class="btn btn-primary btn-xl text-uppercase" href="{% url 'Entrar'%}">Entrar</a>
-                <a class="btn btn-primary btn-xl text-uppercase" href="{% url 'Buscar'%}">Buscar</a>
+                <div class="masthead-subheading">Bienvenido@ a : </div>
+                <div class="masthead-heading text-uppercase">Gentlemen Style</div>
+                <a class="btn btn-primary btn-primary text-uppercase" href="{% url 'Entrar'%}">Entrar</a>
+                <a class="btn btn-primary btn-primary text-uppercase" href="{% url 'Buscar'%}">Buscar</a>
+                <a class="btn btn-primary btn-primary text-uppercase" href="{% url 'Registro'%}">Registro</a>
+               
             </div>
         </header>
-
         {% if mensaje %}
             {% for i in mensaje %}
-               <h1>{{i}}</h1> 
+                <h1>{{i}}</h1> 
             {% endfor %}
         {% endif %}
 
 {% block main_content%}
-
+  
 {% endblock %}
                 <!-- Footer-->
         <footer class="footer py-4">
@@ -66,8 +75,8 @@
                         <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                     <div class="col-lg-4 text-lg-end">
-                        <a class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
-                        <a class="link-dark text-decoration-none" href="#!">Terms of Use</a>
+                        <a class="link-dark text-decoration-none me-3" href="#!">Politica de Privacidad</a>
+                        <a class="link-dark text-decoration-none" href="#!">Terminos de uso</a>
                     </div>
                 </div>
             </div>

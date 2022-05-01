@@ -7,11 +7,15 @@
             }
         </style>
         <p>Página para agregar números de sucursales (del 1 al 10) y su ubicación</p>
-     
+        
             <table>
                 {{mi_formulario1.as_table}}
             </table>
 
          <input type="submit" value= "cargar direcciones" >
+
+            </form>
+        </br>
+         <a class="btn btn-primary btn-xl text-uppercase" href="{% url 'tienda_lista'%}">Lista de Tiendas y acciones</a> 
     </form>
 

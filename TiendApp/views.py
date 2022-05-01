@@ -2,7 +2,7 @@
 from msilib.schema import ListView
 from django.http import HttpResponse
 from TiendApp.forms import *
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from TiendApp.models import *
 
 #vistas basadas en clases
@@ -13,8 +13,11 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 #autenticación con django
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
-class TiendaLista(ListView):
+
+class TiendaLista(LoginRequiredMixin,ListView):
     model = Tiendas
     template_name = "tiendapp/tienda_lista.html"
 
@@ -37,11 +40,17 @@ class TiendaBorrar(DeleteView):
     success_url= "/tiendapp/tienda/lista"
    
 
-
 # Create your views here.
+@login_required
 def inicio(request):
-     return render(request, "tiendapp/index.html")
+    avatar=Avatar.objects.filter(user=request.user)
+    if len(avatar) >0:
+        imagen = avatar[0].imagen.url
+        return render(request, "tiendapp/index.html",{"imagen_url":imagen})
+    else:
+        return render(request, "tiendapp/index.html")
 
+@login_required
 def tiendas(request):
 
      if request.method == "POST":
@@ -59,7 +68,7 @@ def tiendas(request):
 
         return render(request, "tiendapp/tiendas.html", {"mi_formulario1": mi_formulario1})
 
-
+@login_required
 def agenda(request):
     
     if request.method == "POST":
@@ -76,7 +85,7 @@ def agenda(request):
         mi_form =AgregarAgenda()
         return render(request, "tiendapp/contactos.html", {"mi_form": mi_form})
     
-
+@login_required
 def staff(request):
 #el empleados lo uso para obtener los datos de Staff
      empleados=Staff.objects.all()
@@ -100,7 +109,7 @@ def staff(request):
        
 def ventas(request):
      return render(request, "tiendapp/ventas.html")
-
+@login_required
 def entrar(request):
     # method = request.method 
     # print(method)
@@ -127,7 +136,6 @@ def entrar(request):
 def buscarProducto(request):
     return render(request, "tiendapp/buscarProducto.html")
 
-
 def buscar(request):
 #esta vista es maravillosa. primero si encontramos 'productos' (que practicamente lo generamos con la vista
 #buscarProducto, que nos manda al template donde ingresamos los datos, y el a su vez, nos devuelve 'productos'
@@ -151,7 +159,7 @@ def eliminarStaff (request, empleados_dni):
         return render(request, "tiendapp/index.html") 
 
 def actualizar (request, empleados_dni):
-
+ 
     empleado=Staff.objects.get(dni=empleados_dni)
 
     if request.method == "POST":
@@ -167,7 +175,7 @@ def actualizar (request, empleados_dni):
             empleado.telefono=info['telefono']
             empleado.email=info['email']
             empleado.save()
-            return render(request, "tiendapp/index.html")        
+            return redirect("Inicio")      
     else:
         mi_form2= AgregarEmpleado(initial={"nombre":empleado.nombre,"apellido":empleado.apellido, "puesto":empleado.puesto, "dni":empleado.dni, "email":empleado.email, "telefono":empleado.telefono} )
         return render(request, "tiendapp/editarEmpleado.html", {"mi_form2":mi_form2, "empleados_dni":empleados_dni})
@@ -185,7 +193,10 @@ def login_request(request):
         
             if usuario is not None:
                 login(request,usuario)
-                return render(request, "tiendapp/index.html", {"page":usuario, "mensaje":[f"Bienvenid@ {usuario}"]})
+                avatar=Avatar.objects.filter(user=request.user)
+                if len(avatar) >0:
+                    imagen = avatar[0].imagen.url
+                return render(request, "tiendapp/index.html",{"mensaje":[f"Bienvenid@!!!"]})
             else:
                 return render(request, "tiendapp/index.html",{"mensaje": ["Usuario no valido"]})
         else:
@@ -205,10 +216,10 @@ def register_request(request):
         #form = UserCreationForm(request.POST)
         form = UsuarioRegistroForm(request.POST)
         if form.is_valid():
-            usuario = form.cleaned_data.get("username")
-            print(usuario)
+            username = form.cleaned_data.get("username")
+            print(username) 
             form.save()
-            return render(request, "tiendapp/index.html", {"mensaje": [f"El usuario -{usuario}- fue creado con EXITO"]})
+            return render(request, "tiendapp/index.html", {"mensaje": [f"El usuario {username} fue creado con EXITO"]})
         else:
             return render(request, "tiendapp/index.html",{"mensaje": [" Password NO VALIDO"]} )
     else:
@@ -216,8 +227,57 @@ def register_request(request):
         form= UsuarioRegistroForm()
     return render(request, "tiendapp/registro.html", {"form": form})
 
-  
+
+@login_required 
+def actualizarUsuario(request):
+    
+    usuario= request.user
+    if request.method == "POST":
+            forms = UsuarioEditForm(request.POST)
+
+            if forms.is_valid():
+                data = forms.cleaned_data
+                usuario.email = data["email"]
+                usuario.password1 = data["password1"]
+                usuario.password2 = data["password2"]
+                usuario.save()
+
+                return render(request, "tiendapp/index.html",{ "mensaje": [f"el correo nuevo es: {usuario.email}"]})
+            else:
+                forms = UsuarioEditForm(initial={"email": usuario.email})  
+                return render(request,  "tiendapp/editarUsuario.html", {"forms": forms, "mensaje": ["Datos invalidos !!!"]})
+
+    else:
+        forms = UsuarioEditForm(initial={"email": usuario.email})  
+        return render(request,  "tiendapp/editarUsuario.html", {"forms": forms, "mensaje": [f"Actualización del correo electronico de: {usuario}"]})
 
     
-       
+login_required
+def cargar_imagen(request):
+
+    if request.method == "POST":
+
+        formulario = AvatarFormulario(request.POST,request.FILES)
+
+        if formulario.is_valid():
+            usuario = request.user
+            avatar = Avatar.objects.filter(user=usuario)
+
+            if len(avatar) > 0:
+                avatar = avatar[0]
+                avatar.imagen = formulario.cleaned_data["imagen"]
+                avatar.save()
+            else:
+                avatar = Avatar(user=usuario, imagen=formulario.cleaned_data["imagen"])
+                avatar.save()
+
+        return redirect("Inicio")
+    else:
+
+        formulario = AvatarFormulario()
+        return render(request, "tiendapp/cargarImagen.html", {"form": formulario})
+        
+
+        
+        
 

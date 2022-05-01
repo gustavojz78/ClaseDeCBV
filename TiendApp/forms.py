@@ -24,18 +24,30 @@ class AgregarEmpleado(forms.Form):
     telefono=forms.IntegerField()
 
 class UsuarioRegistroForm(UserCreationForm):
-    usuario=forms.CharField(max_length=30)
+    
     email=forms.EmailField()
     password1= forms.CharField(label="Contraseña", widget=forms.PasswordInput)
     password2= forms.CharField(label="Repetir contraseña", widget=forms.PasswordInput)
 
     class Meta:
         model = User
-        fields = ['usuario', 'email', 'password1', 'password2']
+        fields = ['username','email', 'password1', 'password2']
         help_text = { k: "" for k in fields} 
 
 
+class UsuarioEditForm(UserCreationForm):
 
+    email = forms.EmailField()
+    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Repetir contraseña', widget=forms.PasswordInput)
+    class Meta:
+        model = User
+        fields = ['email', 'password1', 'password2']
+        help_text = { k: "" for k in fields}
+
+class AvatarFormulario(forms.Form):
+
+    imagen = forms.ImageField() 
 
 
 
